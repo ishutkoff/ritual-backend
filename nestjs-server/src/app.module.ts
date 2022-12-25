@@ -7,8 +7,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ProductsModule } from './products/products.module';
 import { FilesModule } from './files/files.module';
 import { ServicesModule } from './services/services.module';
-import { GroupsModule } from './groups/groups.module';
-
+import { CategoriesModule } from './categories/categories.module';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
+import { TokenModule } from './token/token.module';
+import { ConfigModule } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
+import configurations from './configurations';
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017'),
@@ -16,10 +21,18 @@ import { GroupsModule } from './groups/groups.module';
     ProductsModule,
     FilesModule,
     ServicesModule,
-    GroupsModule,
+    CategoriesModule,
+    TokenModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [configurations],
+    }),
     MulterModule.register({
       dest: './uploads',
     }),
+    AuthModule,
+    TokenModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

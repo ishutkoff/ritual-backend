@@ -3,8 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Types, Model } from 'mongoose';
 import { Service, ServiceDocument } from 'src/schemas/service.schema';
 import { Shop, ShopDocument } from 'src/schemas/shop.schema';
-import { CreateServiceDto } from './dto/create-service.dto';
-import { UpdateServiceDto } from './dto/update-service.dto';
+import { CreateServiceDto, UpdateServiceDto } from './dto';
 
 @Injectable()
 export class ServicesService {
@@ -16,24 +15,19 @@ export class ServicesService {
   ) {}
 
   async createService(service: CreateServiceDto) {
-    const newProduct = new this.serviceModel({
-      title: service.title,
-      price: service.price,
-      burial: service.burial,
-      cremation: service.cremation,
-    });
+    const newProduct = new this.serviceModel(service);
     return newProduct.save();
   }
   async getServiceById(serviceId: string) {
-    return this.serviceModel.find({ _id: serviceId }).exec();
+    return this.serviceModel.findOne({ _id: serviceId }).exec();
   }
 
   async getAllServices() {
     return this.serviceModel.find({}).exec();
   }
 
-  async updateService(serviceId: string, service: UpdateServiceDto) {
-    await this.serviceModel.findByIdAndUpdate(serviceId, {
+  async updateService(service: UpdateServiceDto) {
+    await this.serviceModel.findByIdAndUpdate(service._id, {
       $set: service,
     });
   }

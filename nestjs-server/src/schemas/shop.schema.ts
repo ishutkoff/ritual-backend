@@ -13,6 +13,15 @@ export class Shop {
   @Prop()
   domain: string;
 
+  @Prop()
+  phone: string;
+
+  @Prop()
+  email: string;
+
+  @Prop()
+  telegramBot: string;
+
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }] })
   products: Product[];
 

@@ -14,7 +14,7 @@ export class Product {
   price: number;
 
   @Prop()
-  group: string;
+  category: string;
 
   @Prop()
   burial: boolean;

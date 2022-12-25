@@ -8,13 +8,16 @@ import {
   Res,
   Param,
   HttpStatus,
+  Body,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from '../utils/file-upload.utils';
+import { FilesService } from './files.service';
 @Controller('files')
 export class FilesController {
-  // upload single file
+  constructor(private readonly filesService: FilesService) {}
+
   @Post()
   @UseInterceptors(
     FileInterceptor('image', {
@@ -68,5 +71,10 @@ export class FilesController {
       status: HttpStatus.OK,
       data: response,
     };
+  }
+
+  @Post('remove')
+  async removeFile(@Body() body: any) {
+    this.filesService.removeFile('./uploads/' + body.imageName);
   }
 }

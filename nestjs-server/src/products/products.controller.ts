@@ -6,64 +6,54 @@ import {
   Param,
   Post,
   Put,
-  UploadedFile,
-  UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { CreateProductDto, UpdateProductDto } from './dto';
 import { ProductsService } from './products.service';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { editFileName, imageFileFilter } from '../utils/file-upload.utils';
+import { JwtAuthGuard } from 'src/guards/jwt-guard';
 
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @Get('')
-  async getAllShops() {
+  async getAllProducts() {
     return await this.productsService.getAllProducts();
   }
 
   @Get(':productId')
-  async getProductById(@Param('productId') productIs: string) {
-    return await this.productsService.getProductById(productIs);
+  async getProductById(@Param('productId') productId: string) {
+    return await this.productsService.getProductById(productId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('')
-  @UseInterceptors(
-    FileInterceptor('image', {
-      storage: diskStorage({
-        destination: './uploads',
-        filename: editFileName,
-      }),
-      fileFilter: imageFileFilter,
-    }),
-  )
-  async createProduct(@Body() product: CreateProductDto, @UploadedFile() file) {
+  async createProduct(@Body() product: CreateProductDto) {
     return await this.productsService.createProduct({
       title: product.title,
-      image: file.filename,
+      image: product.image,
       price: product.price,
-      group: product.group,
+      category: product.category,
       burial: product.burial,
       cremation: product.cremation,
     });
   }
 
-  @Put(':productId')
-  async updateProduct(
-    @Param('productId') productId: string,
-    @Body() body: UpdateProductDto,
-  ) {
-    return await this.productsService.updateProduct(productId, body);
+  @UseGuards(JwtAuthGuard)
+  @Put()
+  async updateProduct(@Body() @Body() product: UpdateProductDto) {
+    return await this.productsService.updateProduct({
+      _id: product._id,
+      title: product.title,
+      image: product.image,
+      price: product.price,
+      category: product.category,
+      burial: product.burial,
+      cremation: product.cremation,
+    });
   }
 
-  @Put('set-group/:productId')
-  async setGroup(@Param('productId') productId: string, @Body() body: any) {
-    return await this.productsService.setGroup(productId, body.groupId);
-  }
-
+  @UseGuards(JwtAuthGuard)
   @Delete(':shopId')
   async removeProduct(@Param('shopId') shopId: string) {
     return await this.productsService.removeProduct(shopId);

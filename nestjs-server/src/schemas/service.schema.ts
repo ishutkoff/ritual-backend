@@ -11,7 +11,7 @@ export class Service {
   price: number;
 
   @Prop()
-  group: string;
+  category: string;
 
   @Prop()
   burial: boolean;

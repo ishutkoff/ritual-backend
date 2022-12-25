@@ -6,9 +6,10 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
-import { CreateServiceDto } from './dto/create-service.dto';
-import { UpdateServiceDto } from './dto/update-service.dto';
+import { JwtAuthGuard } from 'src/guards/jwt-guard';
+import { CreateServiceDto, UpdateServiceDto } from './dto';
 import { ServicesService } from './services.service';
 
 @Controller('services')
@@ -20,30 +21,30 @@ export class ProductsController {
     return await this.servicesService.getAllServices();
   }
 
-  @Get(':productId')
-  async getServiceById(@Param('productId') productIs: string) {
-    return await this.servicesService.getServiceById(productIs);
+  @Get(':serviceId')
+  async getServiceById(@Param('serviceId') serviceId: string) {
+    return await this.servicesService.getServiceById(serviceId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('')
-  async createProduct(@Body() service: CreateServiceDto) {
+  async createService(@Body() service: CreateServiceDto) {
     return await this.servicesService.createService({
       title: service.title,
       price: service.price,
-      group: service.group,
+      category: service.category,
       burial: service.burial,
       cremation: service.cremation,
     });
   }
 
-  @Put(':productId')
-  async updateProduct(
-    @Param('productId') productId: string,
-    @Body() body: UpdateServiceDto,
-  ) {
-    return await this.servicesService.updateService(productId, body);
+  @UseGuards(JwtAuthGuard)
+  @Put()
+  async updateProduct(@Body() body: UpdateServiceDto) {
+    return await this.servicesService.updateService(body);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':serviceId')
   async removeService(@Param('serviceId') serviceId: string) {
     return await this.servicesService.removeService(serviceId);
