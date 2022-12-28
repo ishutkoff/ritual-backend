@@ -11,12 +11,18 @@ import { CategoriesModule } from './categories/categories.module';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { TokenModule } from './token/token.module';
-import { ConfigModule } from '@nestjs/config';
+import {ConfigModule, ConfigService} from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import configurations from './configurations';
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGODB_URL),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('mongodbUrl')
+      }),
+      inject: [ConfigService]
+    }),
     ShopsModule,
     ProductsModule,
     FilesModule,
@@ -25,6 +31,7 @@ import configurations from './configurations';
     TokenModule,
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: `.${process.env.NODE_ENV}.env`,
       load: [configurations],
     }),
     MulterModule.register({
@@ -35,6 +42,6 @@ import configurations from './configurations';
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ConfigService],
 })
 export class AppModule {}
