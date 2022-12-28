@@ -16,11 +16,6 @@ import { ServicesService } from './services.service';
 export class ProductsController {
   constructor(private servicesService: ServicesService) {}
 
-  @Get('')
-  async getAllServices() {
-    return await this.servicesService.getAllServices();
-  }
-
   @Get(':serviceId')
   async getServiceById(@Param('serviceId') serviceId: string) {
     return await this.servicesService.getServiceById(serviceId);

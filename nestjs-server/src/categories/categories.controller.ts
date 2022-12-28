@@ -5,7 +5,7 @@ import {
   Get,
   Param,
   Post,
-  Put,
+  Put, Query,
   UseGuards,
 } from '@nestjs/common';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
@@ -17,8 +17,8 @@ export class CategoriesController {
   constructor(private categoriesService: CategoriesService) {}
 
   @Get('/')
-  async getAllCategories() {
-    return await this.categoriesService.getAllCategories();
+  async getAllCategories(@Query('shop_id') shop_id:string) {
+    return await this.categoriesService.getAllCategories(shop_id);
   }
 
   @UseGuards(JwtAuthGuard)

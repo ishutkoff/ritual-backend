@@ -16,8 +16,10 @@ export class CategoriesService {
     private serviceModel: Model<ServiceDocument>,
   ) {}
 
-  async getAllCategories() {
-    return await this.categoryModel.find();
+  async getAllCategories(shop_id: string) {
+    return await this.categoryModel.find({
+      shopId: shop_id
+    }).exec();
   }
 
   async createCategory(category: CreateCategoryDto) {
@@ -32,7 +34,7 @@ export class CategoriesService {
         $set: category,
       },
       { new: true },
-    );
+    ).exec();
   }
 
   async removeCategory(categoryId: string) {

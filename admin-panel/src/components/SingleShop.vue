@@ -214,10 +214,10 @@ export default {
 		getCategories(forServices) {
 			return forServices
 				? this.$store.state.categories.categoriesList.filter(
-						catrgory => catrgory.forServices
+              category => category.forServices
 				  )
 				: this.$store.state.categories.categoriesList.filter(
-						catrgory => !catrgory.forServices
+              category => !category.forServices
 				  )
 		},
 		addNewProduct() {
@@ -276,7 +276,7 @@ export default {
 		for (const service of this.getOneShop(this.$route.params.id).services) {
 			await this.fetchOneService({ serviceId: service, new: true })
 		}
-		await this.fetchAllCategories()
+		await this.fetchAllCategories(this.$route.params.id)
 	},
 }
 </script>

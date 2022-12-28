@@ -16,11 +16,6 @@ import { JwtAuthGuard } from 'src/guards/jwt-guard';
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
-  @Get('')
-  async getAllProducts() {
-    return await this.productsService.getAllProducts();
-  }
-
   @Get(':productId')
   async getProductById(@Param('productId') productId: string) {
     return await this.productsService.getProductById(productId);

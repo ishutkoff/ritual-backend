@@ -16,7 +16,7 @@ import { UsersModule } from './users/users.module';
 import configurations from './configurations';
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017'),
+    MongooseModule.forRoot(process.env.MONGODB_URL),
     ShopsModule,
     ProductsModule,
     FilesModule,

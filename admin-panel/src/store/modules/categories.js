@@ -7,8 +7,8 @@ export default {
 		}
 	},
 	actions: {
-		async fetchAllCategories({ commit }) {
-			const res = await api.get(`${import.meta.env.VITE_URL}/categories/`)
+		async fetchAllCategories({ commit },shopId) {
+			const res = await api.get(`${import.meta.env.VITE_URL}/categories/?shop_id=${shopId}`)
 			const result = await res.data
 			commit('addAllCategory', result)
 		},

@@ -22,7 +22,7 @@ export class ShopsService {
   categoriesService: CategoriesService;
 
   async getShopById(shopId: string) {
-    return this.shopModel.find({ _id: shopId }).exec();
+    return this.shopModel.findOne({ _id: shopId }).exec();
   }
 
   async getAllShops() {

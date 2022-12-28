@@ -23,11 +23,6 @@ export class ProductsService {
   async getProductById(productId: string) {
     return this.productModel.findOne({ _id: productId }).exec();
   }
-
-  async getAllProducts() {
-    return this.productModel.find({}).exec();
-  }
-
   async updateProduct(product: UpdateProductDto) {
     const res = await this.productModel.findOneAndUpdate(
       { _id: product._id },

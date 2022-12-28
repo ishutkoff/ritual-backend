@@ -22,16 +22,11 @@ export class ServicesService {
     return this.serviceModel.findOne({ _id: serviceId }).exec();
   }
 
-  async getAllServices() {
-    return this.serviceModel.find({}).exec();
-  }
-
   async updateService(service: UpdateServiceDto) {
     await this.serviceModel.findByIdAndUpdate(service._id, {
       $set: service,
     });
   }
-
   async removeService(serviceId: string) {
     const shops = await this.shopModel.find({ services: serviceId });
 
