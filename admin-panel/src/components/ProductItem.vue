@@ -5,7 +5,7 @@
 			<a @click.prevent="getProduct(product)" href="#">
 				<img
 					v-if="product.image"
-					:src="`http://127.0.0.1:3000/files/${product.image}`"
+					:src="`${defaultPath}/files/${product.image}`"
 					alt=""
 				/>
 				<svg
@@ -67,6 +67,9 @@ export default {
 			}
 		},
 	},
+  mounted() {
+    this.defaultPath = import.meta.env.VITE_URL
+  }
 }
 </script>
 

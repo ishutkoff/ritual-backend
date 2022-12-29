@@ -121,7 +121,7 @@ export default {
 	computed: {
 		getImageSrc() {
 			return this.newProduct.image
-				? 'http://localhost:3000/files/' + this.newProduct.image
+				? `${this.defaultPath}/files/` + this.newProduct.image
 				: ''
 		},
 		isEmpty() {
@@ -135,6 +135,7 @@ export default {
 		},
 	},
 	mounted() {
+    this.defaultPath = import.meta.env.VITE_URL
 		this.newProduct = Object.assign({}, this.product)
 		this.previewImage = this.getImageSrc
 		if (this.newProduct.category) {
