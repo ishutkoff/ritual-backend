@@ -67,7 +67,7 @@ export default {
 			}
 		},
 	},
-  mounted() {
+  created() {
     this.defaultPath = import.meta.env.VITE_URL
   }
 }
