@@ -201,15 +201,16 @@ export default {
 		...mapGetters(['getOneShop', 'getShopServices', 'getShopProducts']),
 	},
 	methods: {
-		...mapMutations(['clearProductShopList', 'clearServicesShopList']),
+		...mapMutations(['clearProductShopList', 'clearServicesShopList', 'setShopProducts', 'setShopServices']),
 		...mapActions([
 			'fetchAllCategories',
 			'updateProduct',
 			'insertProduct',
-			'fetchOneProduct',
 			'updateService',
+      'fetchOneProduct',
+      'fetchOneService',
 			'insertService',
-			'fetchOneService',
+        'fetchShopById'
 		]),
 		getCategories(forServices) {
 			return forServices
@@ -268,14 +269,12 @@ export default {
 		},
 	},
 	async mounted() {
+    this.shop = await this.fetchShopById(this.$route.params.id)
+    console.log(this.shop)
 		this.clearProductShopList()
 		this.clearServicesShopList()
-		for (const product of this.getOneShop(this.$route.params.id).products) {
-			await this.fetchOneProduct({ productId: product, new: true })
-		}
-		for (const service of this.getOneShop(this.$route.params.id).services) {
-			await this.fetchOneService({ serviceId: service, new: true })
-		}
+    this.setShopProducts(this.shop.products)
+    this.setShopServices(this.shop.services)
 		await this.fetchAllCategories(this.$route.params.id)
 	},
 }

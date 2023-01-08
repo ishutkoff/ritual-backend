@@ -16,6 +16,7 @@ export default {
 			const res = await api.get(`${import.meta.env.VITE_URL}/shops/${shopId}`)
 			const shop = await res.data
 			commit('updateOneShop', shop)
+			return shop
 		},
 
 		async insertProduct({ commit }, payload) {

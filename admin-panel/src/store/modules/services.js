@@ -42,6 +42,9 @@ export default {
 		clearServicesShopList(state) {
 			state.shopServicesList = []
 		},
+		setShopServices(state, service){
+			state.shopServicesList = service
+		},
 		getOneService(state, data) {
 			const newList = state.shopServicesList.map(service => {
 				if (service._id === data.newService._id) {

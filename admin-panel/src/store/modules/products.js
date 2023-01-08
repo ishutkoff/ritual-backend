@@ -76,6 +76,9 @@ export default {
 		addProductToShopList(state, product) {
 			state.shopProductList.push(product)
 		},
+		setShopProducts(state, products){
+			state.shopProductList = products
+		},
 		clearProductShopList(state) {
 			state.shopProductList = []
 		},
