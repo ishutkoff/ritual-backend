@@ -34,6 +34,7 @@ export class ShopsService {
       domain: shop.domain,
       phone: shop.phone,
       telegramApiKey: shop.telegramApiKey,
+      chatId: shop.chatId,
       email: shop.email,
       products: [],
       services: [],

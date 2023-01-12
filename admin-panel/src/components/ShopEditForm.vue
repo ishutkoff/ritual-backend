@@ -9,7 +9,12 @@
 			type="text"
 			placeholder="Telegram Bot Api Key"
 		/>
-		<!-- <input v-model="newProduct.title" type="text" placeholder="Телеграм бот" />  -->
+		<input v-model="newShop.email" type="text" placeholder="Email" />
+		<input
+			v-model="newShop.chatId"
+			type="text"
+			placeholder="Telegram chat id"
+		/>
 	</div>
 	<div class="shop-edit-form__footer">
 		<simple-button :disabled="isEmpty" @click="sendEditForm()"

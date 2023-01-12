@@ -11,19 +11,10 @@ export class SendDataService {
     private readonly shopsService: ShopsService,
   ) {}
 
-  async getChatId(token: string) {
-    const res = await this.httpService
-      .get(`https://api.telegram.org/bot${token}/getUpdates`)
-      .toPromise();
-    return res.data.result[0].message.chat.id;
-
-    // .result.update_id
-  }
-
   async send(dataObject: dataObjectDto) {
     const shop = await this.shopsService.getShopById(dataObject.shopId);
     const apiKey = shop.telegramApiKey;
-    const chatId = await this.getChatId(apiKey);
+    const chatId = shop.chatId;
     let html = `<strong>Состав заказа:</strong>%0A`;
     dataObject.orderList.forEach((item) => {
       html += `<strong>${item.title}</strong> - ${item.price} ₽%0A`;
