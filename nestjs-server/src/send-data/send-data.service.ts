@@ -23,7 +23,7 @@ export class SendDataService {
         (accumulator, currentValue) => accumulator + currentValue.price,
         0,
       )
-      .toLocaleString('ru')} ₽`;
+      .toLocaleString('ru')} ₽%0A`;
     html += `<strong>Состав заказа:</strong>%0A`;
     dataObject.orderList.forEach((item) => {
       html += `<strong>${item.title}</strong> - ${item.price} ₽%0A`;
