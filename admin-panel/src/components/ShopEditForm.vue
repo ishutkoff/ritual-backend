@@ -41,7 +41,12 @@ export default {
 	},
 	computed: {
 		isEmpty() {
-			return !this.newShop.name || !this.newShop.domain || !this.newShop.email
+			return (
+				!this.newShop.name ||
+				!this.newShop.domain ||
+				!this.newShop.chatId ||
+				!this.newShop.telegramApiKey
+			)
 		},
 	},
 	mounted() {

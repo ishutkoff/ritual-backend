@@ -22,6 +22,9 @@ export class Shop {
   @Prop()
   telegramApiKey: string;
 
+  @Prop()
+  chatId: string;
+
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }] })
   products: Product[];
 
