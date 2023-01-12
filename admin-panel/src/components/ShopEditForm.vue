@@ -9,7 +9,6 @@
 			type="text"
 			placeholder="Telegram Bot Api Key"
 		/>
-		<input v-model="newShop.email" type="text" placeholder="Email" />
 		<input
 			v-model="newShop.chatId"
 			type="text"
