@@ -4,6 +4,11 @@
 		<input v-model="newShop.domain" type="text" placeholder="Домен" />
 		<input v-model="newShop.phone" type="text" placeholder="Номер телефона" />
 		<input v-model="newShop.email" type="text" placeholder="Email" />
+		<input
+			v-model="newShop.telegramApiKey"
+			type="text"
+			placeholder="Telegram Bot Api Key"
+		/>
 		<!-- <input v-model="newProduct.title" type="text" placeholder="Телеграм бот" />  -->
 	</div>
 	<div class="shop-edit-form__footer">

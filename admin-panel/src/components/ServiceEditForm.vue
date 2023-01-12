@@ -70,7 +70,7 @@ export default {
 	},
 	computed: {
 		isEmpty() {
-			if (!this.newService.title || !this.newService.price) return true
+			if (!this.newService.title || !this.newService.price === '') return true
 			return false
 		},
 		getCategories() {

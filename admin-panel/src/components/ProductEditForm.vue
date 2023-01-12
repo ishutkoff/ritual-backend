@@ -125,7 +125,7 @@ export default {
 				: ''
 		},
 		isEmpty() {
-			if (!this.newProduct.title || !this.newProduct.price) return true
+			if (!this.newProduct.title || !this.newService.price === '') return true
 			return false
 		},
 		getCategories() {
@@ -135,7 +135,7 @@ export default {
 		},
 	},
 	mounted() {
-    this.defaultPath = import.meta.env.VITE_URL
+		this.defaultPath = import.meta.env.VITE_URL
 		this.newProduct = Object.assign({}, this.product)
 		this.previewImage = this.getImageSrc
 		if (this.newProduct.category) {

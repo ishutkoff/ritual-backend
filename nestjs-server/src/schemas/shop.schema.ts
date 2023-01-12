@@ -20,7 +20,7 @@ export class Shop {
   email: string;
 
   @Prop()
-  telegramBot: string;
+  telegramApiKey: string;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }] })
   products: Product[];

@@ -12,8 +12,10 @@ export class CreateShopDto {
   @IsNotEmpty()
   phone: string;
   @IsString()
-  @IsNotEmpty()
   email: string;
+  @IsString()
+  @IsNotEmpty()
+  telegramApiKey: string;
   telegramBot: string;
   services: Product[];
   products: Product[];

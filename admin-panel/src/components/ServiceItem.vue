@@ -10,7 +10,7 @@
 		<!-- </div> -->
 		<div class="product-item__title">
 			<a @click.prevent="getService(service)" href="#">{{ service.title }}</a>
-			<p>Цена: {{ service.price }}</p>
+			<p>Цена: {{ service.price > 0 ? service.price : 'Бесплатно' }}</p>
 			<p>Захоронение: {{ service.burial ? 'Да' : 'Нет' }}</p>
 			<p>Кремирование: {{ service.cremation ? 'Да' : 'Нет' }}</p>
 		</div>

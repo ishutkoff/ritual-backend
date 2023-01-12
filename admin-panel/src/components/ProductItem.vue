@@ -40,7 +40,7 @@
 		</div>
 		<div class="product-item__title">
 			<a @click.prevent="getProduct(product)" href="#">{{ product.title }}</a>
-			<p>Цена: {{ product.price }}</p>
+			<p>Цена: {{ product.price > 0 ? product.price : 'Бесплатно' }}</p>
 			<p>Захоронение: {{ product.burial ? 'Да' : 'Нет' }}</p>
 			<p>Кремирование: {{ product.cremation ? 'Да' : 'Нет' }}</p>
 		</div>
@@ -67,9 +67,9 @@ export default {
 			}
 		},
 	},
-  created() {
-    this.defaultPath = import.meta.env.VITE_URL
-  }
+	created() {
+		this.defaultPath = import.meta.env.VITE_URL
+	},
 }
 </script>
 
