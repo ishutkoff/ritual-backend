@@ -3,6 +3,7 @@ import ShopsList from './../components/ShopsList.vue'
 import SingleShop from './../components/SingleShop.vue'
 import Auth from './../components/Auth.vue'
 import store from './../store'
+import Visualizator from "../components/Visualizator.vue";
 
 const routes = [
 	{ path: '/auth', name: 'auth', component: Auth },
@@ -33,6 +34,14 @@ const routes = [
 	{
 		path: '/shop/:id/services',
 		name: 'shop-services',
+		meta: {
+			requiresAuth: true,
+		},
+		component: SingleShop,
+	},
+	{
+		path: '/shop/:id/visualizator',
+		name: 'shop-visualizator',
 		meta: {
 			requiresAuth: true,
 		},

@@ -23,8 +23,8 @@ export default {
 				}
 			)
 			const result = await res.data
-			if (category._id) commit('updateOneCategory', result)
-			else commit('addCategory', result)
+
+			if (!category._id) commit('addCategory', result)
 		},
 
 		async removeCategory({ commit }, categoryId) {
@@ -38,16 +38,6 @@ export default {
 	mutations: {
 		addAllCategory(state, categories) {
 			state.categoriesList = categories
-		},
-
-		updateOneCategory(state, newCategory) {
-			const newList = state.shopsList.map(category => {
-				if (category._id === newCategory._id) {
-					return newCategory
-				}
-				return category
-			})
-			state.categoriesList = newList
 		},
 		addCategory(state, category) {
 			state.categoriesList.push(category)

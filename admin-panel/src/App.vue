@@ -10,8 +10,10 @@
 
 <script>
 import { mapActions, mapMutations } from 'vuex'
+import TopNavigation from "./components/UI/TopNavigation.vue";
 
 export default {
+  components: {TopNavigation},
 	methods: {
 		...mapActions(['fetchShops']),
 		...mapMutations(['SetLoginMode']),

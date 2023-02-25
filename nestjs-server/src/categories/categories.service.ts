@@ -17,9 +17,11 @@ export class CategoriesService {
   ) {}
 
   async getAllCategories(shop_id: string) {
-    return await this.categoryModel.find({
-      shopId: shop_id
-    }).exec();
+    return await this.categoryModel
+      .find({
+        shopId: shop_id,
+      })
+      .exec();
   }
 
   async createCategory(category: CreateCategoryDto) {
@@ -28,13 +30,15 @@ export class CategoriesService {
   }
 
   async updateCategory(category: UpdateCategoryDto) {
-    return await this.categoryModel.findByIdAndUpdate(
-      category._id,
-      {
-        $set: category,
-      },
-      { new: true },
-    ).exec();
+    return await this.categoryModel
+      .findByIdAndUpdate(
+        category._id,
+        {
+          $set: category,
+        },
+        { new: true },
+      )
+      .exec();
   }
 
   async removeCategory(categoryId: string) {

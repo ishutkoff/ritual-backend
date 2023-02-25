@@ -1,4 +1,5 @@
 import api from './../../api'
+
 export default {
 	state() {
 		return {
@@ -34,48 +35,8 @@ export default {
 			const result = await res.data
 			commit('removeProduct', productId)
 		},
-
-		async uploadPicture({ commit }, formData) {
-			const res = await api.post(
-				`${import.meta.env.VITE_URL}/files/`,
-				formData,
-				{
-					headers: {
-						'Content-Type': 'multipart/form-data',
-					},
-				}
-			)
-
-			const result = await res.data
-			return result.data.filename
-		},
-
-		async removePicture({ commit }, fileName) {
-			const res = await api.post(
-				`${import.meta.env.VITE_URL}/files/remove/`,
-				{
-					imageName: fileName,
-				},
-				{
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				}
-			)
-			await res.data
-		},
-		async getPicture({ commit }, fileName) {
-			const res = await api.get(
-				`${import.meta.env.VITE_URL}/products/files/${fileName}`
-			)
-			const result = await res.data
-			return result
-		},
 	},
 	mutations: {
-		addProductToShopList(state, product) {
-			state.shopProductList.push(product)
-		},
 		setShopProducts(state, products){
 			state.shopProductList = products
 		},

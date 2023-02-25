@@ -1,5 +1,7 @@
 import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 import { Product } from 'src/schemas/product.schema';
+import { VMonument } from '../../schemas/visualizator-monument.schema';
+import { VSketch } from '../../schemas/visualizator-sketch.schema';
 
 export class CreateShopDto {
   @IsString()
@@ -22,6 +24,8 @@ export class CreateShopDto {
   telegramBot: string;
   services: Product[];
   products: Product[];
+  monuments: VMonument[];
+  sketches: VSketch[];
 }
 
 export class UpdateShopDto {
@@ -48,4 +52,6 @@ export class UpdateShopDto {
   chatId: string;
   services: Product[];
   products: Product[];
+  monuments: VMonument[];
+  sketches: VSketch[];
 }

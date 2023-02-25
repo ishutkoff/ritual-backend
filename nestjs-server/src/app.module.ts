@@ -18,6 +18,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { SendDataService } from './send-data/send-data.service';
 import { SendDataController } from './send-data/send-data.controller';
 import { HttpModule } from '@nestjs/axios/dist';
+import { VisualizatorModule } from './visualizator/visualizator.module';
 @Module({
   imports: [
     MailerModule.forRoot({
@@ -59,6 +60,7 @@ import { HttpModule } from '@nestjs/axios/dist';
     HttpModule,
     TokenModule,
     UsersModule,
+    VisualizatorModule,
   ],
   controllers: [AppController, SendDataController, SendDataController],
   providers: [AppService, ConfigService, SendDataService, SendDataService],

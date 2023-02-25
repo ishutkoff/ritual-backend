@@ -9,26 +9,29 @@ import {
   Param,
   HttpStatus,
   Body,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from '../utils/file-upload.utils';
 import { FilesService } from './files.service';
+import { JwtAuthGuard } from '../guards/jwt-guard';
 @Controller('files')
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
-    shopId:string = ''
+  shopId = '';
+  @UseGuards(JwtAuthGuard)
   @Post()
-    @UseInterceptors(
-        FileInterceptor('image', {
-            storage: diskStorage({
-                destination: './uploads',
-                filename: editFileName,
-            }),
-            fileFilter: imageFileFilter,
-        }),
-    )
-  async uploadedFile(@UploadedFile() file ) {
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: editFileName,
+      }),
+      fileFilter: imageFileFilter,
+    }),
+  )
+  async uploadedFile(@UploadedFile() file) {
     const response = {
       originalname: file.originalname,
       filename: file.filename,
@@ -39,6 +42,7 @@ export class FilesController {
       data: response,
     };
   }
+  @UseGuards(JwtAuthGuard)
   @Post('uploadMultipleFiles')
   @UseInterceptors(
     FilesInterceptor('image', 10, {
@@ -64,6 +68,7 @@ export class FilesController {
       data: response,
     };
   }
+
   @Get(':imagename')
   getImage(@Param('imagename') image, @Res() res) {
     const response = res.sendFile(image, { root: './uploads' });
@@ -73,6 +78,7 @@ export class FilesController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('remove')
   async removeFile(@Body() body: any) {
     this.filesService.removeFile('./uploads/' + body.imageName);

@@ -125,7 +125,7 @@ export default {
 				: ''
 		},
 		isEmpty() {
-			if (!this.newProduct.title || !this.newService.price === '') return true
+			if (!this.newProduct.title || this.newProduct.price === '') return true
 			return false
 		},
 		getCategories() {

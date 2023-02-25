@@ -28,149 +28,31 @@
 				>
 					Услуги
 				</router-link>
-			</div>
-			<div class="single-shop__buttons">
-				<simple-button
-					v-if="$route.name === 'shop-products'"
-					@click="addNewProduct()"
-					>Добавить товар</simple-button
-				>
-				<simple-button
-					v-if="$route.name === 'shop-services'"
-					@click="addNewService()"
-					>Добавить услугу</simple-button
-				>
+        <router-link
+            :to="`/shop/${$route.params.id}/visualizator`"
+            class="tabs-navigation__item"
+            :class="
+						$route.name === 'shop-visualizator'
+							? 'tabs-navigation__item--selected'
+							: ''
+					"
+        >
+          Визуализатор
+        </router-link>
 			</div>
 		</div>
+
 		<div v-if="$route.name === 'shop-products'" class="tabs-item">
-			<div class="single-shop__products">
-				<div class="single-shop__left">
-					<p
-						v-if="$store.state.products.shopProductList.length === 0"
-						class="empty-list"
-					>
-						Список товаров пуст
-					</p>
-
-					<div v-for="category of getCategories(false)" :key="category._id">
-						<div
-							v-if="getShopProducts(category._id).length > 0"
-							class="single-shop__items-list"
-						>
-							<h2>{{ category.title }}</h2>
-							<div class="single-shop__items-wrapper">
-								<product-item
-									v-for="product in getShopProducts(category._id)"
-									@product-click="editProduct(product)"
-									:product="product"
-									:key="product._id"
-								/>
-							</div>
-						</div>
-					</div>
-
-					<div
-						v-if="getShopProducts(false).length > 0"
-						class="single-shop__items-list"
-					>
-						<h2>Без категории</h2>
-						<div class="single-shop__items-wrapper">
-							<product-item
-								v-for="product in getShopProducts(false)"
-								@product-click="editProduct(product)"
-								:product="product"
-								:key="product._id"
-							/>
-						</div>
-					</div>
-					<simple-modal
-						:title="productModalTitle"
-						v-model:show="showAddProductDialog"
-						@closeModal="showAddProductDialog"
-					>
-						<template v-slot:body>
-							<product-edit-form
-								@send-form="sendProductEditForm"
-								:product="product"
-								:shopId="$route.params.id"
-							/>
-						</template>
-					</simple-modal>
-				</div>
-				<div class="single-shop__right">
-					<h2>Категории продукции</h2>
-					<categories-list
-						:categories="getCategories(false)"
-						:forServices="false"
-						:shopId="$route.params.id"
-					/>
-				</div>
-			</div>
+      <ProductList/>
 		</div>
+
 		<div v-if="$route.name === 'shop-services'" class="tabs-item">
-			<div class="single-shop__services">
-				<div class="single-shop__left">
-					<p
-						v-if="$store.state.services.shopServicesList.length === 0"
-						class="empty-list"
-					>
-						Список услуг пуст
-					</p>
-					<div v-for="category of getCategories(true)" :key="category._id">
-						<div
-							v-if="getShopServices(category._id).length > 0"
-							class="single-shop__items-list"
-						>
-							<h2>{{ category.title }}</h2>
-							<div class="single-shop__items-wrapper">
-								<service-item
-									v-for="service in getShopServices(category._id)"
-									@service-click="editService(service)"
-									:service="service"
-									:key="service._id"
-								/>
-							</div>
-						</div>
-					</div>
-
-					<div
-						v-if="getShopServices(false).length > 0"
-						class="single-shop__items-list"
-					>
-						<h2>Без категории</h2>
-						<div class="single-shop__items-wrapper">
-							<service-item
-								v-for="service in getShopServices(false)"
-								@service-click="editService(service)"
-								:service="service"
-								:key="service._id"
-							/>
-						</div>
-					</div>
-					<simple-modal
-						:title="serviceModalTitle"
-						v-model:show="showAddServiceDialog"
-						@closeModal="showAddServiceDialog"
-					>
-						<template v-slot:body>
-							<service-edit-form
-								@send-form="sendServiceEditForm"
-								:service="service"
-								:shopId="$route.params.id"
-							/>
-						</template>
-					</simple-modal>
-				</div>
-				<div class="single-shop__right">
-					<h2>Категории услуг</h2>
-					<categories-list
-						:categories="getCategories(true)"
-						:forServices="true"
-						:shopId="$route.params.id"
-					/>
-				</div>
-			</div>
+       <ServicesList/>
 		</div>
+
+    <div v-if="$route.name === 'shop-visualizator'" class="tabs-item">
+      <Visualizator/>
+    </div>
 	</div>
 </template>
 
@@ -181,13 +63,16 @@ import ServiceItem from './ServiceItem.vue'
 import ProductEditForm from './ProductEditForm.vue'
 import ServiceEditForm from './ServiceEditForm.vue'
 import CategoriesList from './CategoriesList.vue'
+import ProductList from "./ProductList.vue";
+import SimpleButton from "./UI/SimpleButton.vue";
+import Visualizator from "./Visualizator.vue";
+import ServicesList from "./ServicesList.vue";
 export default {
 	components: {
-		ProductItem,
-		ServiceItem,
-		ProductEditForm,
-		ServiceEditForm,
-		CategoriesList,
+    ServicesList,
+    Visualizator,
+    SimpleButton,
+    ProductList,
 	},
 	data() {
 		return {
@@ -201,16 +86,11 @@ export default {
 		...mapGetters(['getOneShop', 'getShopServices', 'getShopProducts']),
 	},
 	methods: {
-		...mapMutations(['clearProductShopList', 'clearServicesShopList', 'setShopProducts', 'setShopServices']),
+		...mapMutations(['clearProductShopList', 'clearShopSketchList', 'setShopMonuments', 'clearShopMonumentList', 'clearServicesShopList', 'setShopProducts', 'setShopServices','setShopSketches']),
 		...mapActions([
 			'fetchAllCategories',
-			'updateProduct',
-			'insertProduct',
-			'updateService',
-      'fetchOneProduct',
-      'fetchOneService',
-			'insertService',
-        'fetchShopById'
+			'fetchAllSketchCategories',
+      'fetchShopById'
 		]),
 		getCategories(forServices) {
 			return forServices
@@ -221,39 +101,18 @@ export default {
               category => !category.forServices
 				  )
 		},
-		addNewProduct() {
-			this.product = {}
-			this.productModalTitle = 'Добавление товара'
-			this.showAddProductDialog = true
-		},
 		addNewService() {
 			this.service = {}
 			this.serviceModalTitle = 'Добавление услуги'
 			this.showAddServiceDialog = true
 		},
-		editProduct(product) {
-			this.product = product
-			this.productModalTitle = 'Редактирование товара'
-			this.showAddProductDialog = true
-		},
+
 		editService(service) {
 			this.service = service
 			this.serviceModalTitle = 'Редактирование услуги'
 			this.showAddServiceDialog = true
 		},
-		async sendProductEditForm(product) {
-			const updatedProduct = await this.updateProduct(product)
-			if (!product._id) {
-				await this.insertProduct({
-					shopId: this.$route.params.id,
-					productId: updatedProduct._id,
-				})
-				await this.fetchOneProduct({ productId: updatedProduct._id, new: true })
-			} else {
-				await this.fetchOneProduct({ productId: product._id, new: false })
-			}
-			this.showAddProductDialog = false
-		},
+
 		async sendServiceEditForm(service) {
 			const updatedService = await this.updateService(service)
 			if (!service._id) {
@@ -273,14 +132,19 @@ export default {
     console.log(this.shop)
 		this.clearProductShopList()
 		this.clearServicesShopList()
+		this.clearShopSketchList()
+		this.clearShopMonumentList()
     this.setShopProducts(this.shop.products)
     this.setShopServices(this.shop.services)
+    this.setShopSketches(this.shop.sketches)
+    this.setShopMonuments(this.shop.monuments)
 		await this.fetchAllCategories(this.$route.params.id)
+		await this.fetchAllSketchCategories(this.$route.params.id)
 	},
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .single-shop {
 	&__title {
 		font-size: 30px;
@@ -366,22 +230,19 @@ export default {
 		cursor: pointer;
 		background-color: #1a1a1a;
 		border-radius: 10px 10px 0 0;
-
+    margin-right: 2px;
 		border-radius: 10px 10px 0 0;
 
 		&--selected {
 			background: #0e0e0e;
 		}
-		&:first-child {
-			margin-right: 2px;
+		&:last-child {
+      margin: 0;
 		}
 	}
 }
 .empty-list {
-	font-size: 18px;
-	text-align: center;
-	background: #1e1e1e;
-	padding: 20px;
-	border-radius: 10px;
+  color: #7c7c7c;
+  font-size: 18px;
 }
 </style>

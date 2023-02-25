@@ -9,6 +9,13 @@ import { Category, CategorySchema } from 'src/schemas/category.schema';
 import { CategoriesModule } from 'src/categories/categories.module';
 import { Product, ProductSchema } from '../schemas/product.schema';
 import { Service, ServiceSchema } from '../schemas/service.schema';
+import { VSketch, VSketchSchema } from '../schemas/visualizator-sketch.schema';
+import {
+  VMonument,
+  VMonumentSchema,
+} from '../schemas/visualizator-monument.schema';
+import { VisualizatorModule } from '../visualizator/visualizator.module';
+import { VCategory } from '../schemas/visualizator-category.schema';
 
 @Module({
   imports: [
@@ -17,10 +24,13 @@ import { Service, ServiceSchema } from '../schemas/service.schema';
       { name: Category.name, schema: CategorySchema },
       { name: Product.name, schema: ProductSchema },
       { name: Service.name, schema: ServiceSchema },
+      { name: VSketch.name, schema: VSketchSchema },
+      { name: VMonument.name, schema: VMonumentSchema },
     ]),
     ProductsModule,
     ServicesModule,
     CategoriesModule,
+    VisualizatorModule,
   ],
   providers: [ShopsService],
   controllers: [ShopsController],

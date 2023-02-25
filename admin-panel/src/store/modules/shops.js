@@ -47,6 +47,35 @@ export default {
 			commit('updateOneShop', shop)
 		},
 
+		async insertSketch({ commit }, payload) {
+			const res = await api.put(
+				`${import.meta.env.VITE_URL}/shops/insert-sketch/${payload.shopId}`,
+				[payload.sketchId],
+				{
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}
+			)
+			const shop = await res.data
+			console.log(shop)
+			commit('updateOneShop', shop)
+		},
+
+		async insertMonument({ commit }, payload) {
+			const res = await api.put(
+				`${import.meta.env.VITE_URL}/shops/insert-monument/${payload.shopId}`,
+				[payload.monumentId],
+				{
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}
+			)
+			const shop = await res.data
+			commit('updateOneShop', shop)
+		},
+
 		async updateShop({ commit }, newShop) {
 			const res = await api[newShop._id ? 'put' : 'post'](
 				`${import.meta.env.VITE_URL}/shops/`,
