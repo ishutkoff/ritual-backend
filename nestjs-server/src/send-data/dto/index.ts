@@ -7,7 +7,19 @@ interface orderItem {
   title: string;
 }
 
-export class dataObjectDto {
+export class dataConstructorObjectDto {
+  @IsString()
+  @IsNotEmpty()
+  shopId: string;
+  name: string;
+  @IsString()
+  @IsNotEmpty()
+  phone: string;
+  @IsString()
+  @IsNotEmpty()
+  document: string;
+}
+export class dataCalculatorObjectDto {
   @IsString()
   @IsNotEmpty()
   shopId: string;
