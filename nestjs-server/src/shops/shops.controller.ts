@@ -40,6 +40,10 @@ export class ShopsController {
       RequestSource.VISUALIZATOR,
     );
   }
+  @Get('/discount/:shopId')
+  async getOneForDiscount(@Param('shopId') shopId: string) {
+    return await this.shopsService.getShopById(shopId, RequestSource.DISCOUNT);
+  }
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createShop: CreateShopDto) {
@@ -50,6 +54,14 @@ export class ShopsController {
   @Put('insert-product/:shopId')
   async insertProduct(@Param('shopId') shopId: string, @Body() body: string[]) {
     return await this.shopsService.insertProducts(shopId, body);
+  }
+
+  @Put('insert-discount/:shopId')
+  async insertDiscount(
+    @Param('shopId') shopId: string,
+    @Body() body: string[],
+  ) {
+    return await this.shopsService.insertDiscount(shopId, body);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -83,5 +95,10 @@ export class ShopsController {
   @Delete(':shopId')
   async removeShop(@Param('shopId') shopId: string) {
     return await this.shopsService.removeShop(shopId);
+  }
+
+  @Get('/get-settings/:shopId')
+  async getShopSettings(@Param('shopId') shopId: string) {
+    return await this.shopsService.getShopSettings(shopId);
   }
 }

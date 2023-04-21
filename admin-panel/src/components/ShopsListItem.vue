@@ -57,6 +57,7 @@ export default {
 		.shops-list__item__remove-btn {
 			display: flex;
 		}
+
 		.shops-list__item__edit-btn {
 			display: flex;
 		}
@@ -89,6 +90,7 @@ export default {
 		cursor: pointer;
 		display: none;
 	}
+
 	&__edit-btn {
 		position: absolute;
 		right: 48px;

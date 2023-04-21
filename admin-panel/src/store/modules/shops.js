@@ -33,6 +33,20 @@ export default {
 			commit('updateOneShop', shop)
 		},
 
+		async insertDiscount({ commit }, payload) {
+			const res = await api.put(
+				`${import.meta.env.VITE_URL}/shops/insert-discount/${payload.shopId}`,
+				[payload.discountId],
+				{
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}
+			)
+			const shop = await res.data
+			commit('updateOneShop', shop)
+		},
+
 		async insertService({ commit }, payload) {
 			const res = await api.put(
 				`${import.meta.env.VITE_URL}/shops/insert-service/${payload.shopId}`,

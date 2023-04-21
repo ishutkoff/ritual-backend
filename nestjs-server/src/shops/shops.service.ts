@@ -1,3 +1,4 @@
+import { DiscountsService } from './../discounts/discounts.service';
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -9,6 +10,7 @@ import { ServicesService } from 'src/services/services.service';
 import { CreateShopDto, UpdateShopDto } from './dto';
 import { Product, ProductDocument } from '../schemas/product.schema';
 import { Service, ServiceDocument } from '../schemas/service.schema';
+import { Discount, DiscountDocument } from '../schemas/discounts.schema';
 import {
   VMonument,
   VMonumentDocument,
@@ -21,11 +23,13 @@ import { VisualizatorSketchesService } from '../visualizator/visualizator-sketch
 import { VisualizatorMonumentsService } from '../visualizator/visualizator-monuments.service';
 import { VisualizatorCategoryService } from '../visualizator/visualizator-category.service';
 import { RequestSource } from './types';
+import { log } from 'console';
 
 @Injectable()
 export class ShopsService {
   constructor(
     @InjectModel(Shop.name) private shopModel: Model<ShopDocument>,
+    @InjectModel(Discount.name) private discountModel: Model<DiscountDocument>,
     @InjectModel(Category.name) private categoryModel: Model<CategoryDocument>,
     @InjectModel(Product.name) private productModel: Model<ProductDocument>,
     @InjectModel(Service.name) private serviceModel: Model<ServiceDocument>,
@@ -37,6 +41,9 @@ export class ShopsService {
 
   @Inject(ProductsService)
   productsService: ProductsService;
+
+  @Inject(DiscountsService)
+  discountsService: DiscountsService;
 
   @Inject(ServicesService)
   servicesService: ServicesService;
@@ -89,7 +96,26 @@ export class ShopsService {
         }),
       );
     }
+    if (!requestSource || requestSource === RequestSource.DISCOUNT) {
+      shopInfo.discounts = await Promise.all(
+        shop.discounts.map(async (discount) => {
+          return this.discountModel.findOne({ _id: discount });
+        }),
+      );
+    }
     return shopInfo;
+  }
+
+  async getShopSettings(shopId) {
+    const shop = await this.shopModel.findOne({ _id: shopId });
+    return {
+      mainColor: shop.mainColor,
+      useCalc: shop.useCalc,
+      useVisual: shop.useVisual,
+      useDiscount: shop.useDiscount,
+      useTeaser: shop.useTeaser,
+      products: shop.products,
+    };
   }
 
   async getAllShops() {
@@ -116,6 +142,18 @@ export class ShopsService {
       shopId,
       {
         $addToSet: { products: productId },
+      },
+      { new: true },
+    );
+  }
+
+  async insertDiscount(shopId: string, discountId: string[]) {
+    console.log(discountId);
+    console.log(shopId);
+    return this.shopModel.findByIdAndUpdate(
+      shopId,
+      {
+        $addToSet: { discounts: discountId },
       },
       { new: true },
     );
@@ -155,6 +193,9 @@ export class ShopsService {
     const shop = await this.shopModel.findById(shopId);
     for (const product of shop.products) {
       await this.productsService.removeProduct(product.toString());
+    }
+    for (const discount of shop.discounts) {
+      await this.discountsService.removeDiscount(discount.toString());
     }
     for (const service of shop.services) {
       await this.servicesService.removeService(service.toString());

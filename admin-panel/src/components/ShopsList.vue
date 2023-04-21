@@ -1,23 +1,14 @@
 <template>
 	<h1>Список сайтов</h1>
 	<div class="shops-list">
-		<ShopsListItem
-			v-for="shop in getAllShops"
-			:shop="shop"
-			@updateShop="setUpdatedShop"
-			:key="shop._id"
-		/>
+		<ShopsListItem v-for="shop in getAllShops" :shop="shop" @updateShop="setUpdatedShop" :key="shop._id" />
 		<div class="shops-list__add-wrapper">
 			<div @click="openAddDialog()" class="shops-list__add-button">
 				Добавить сайт
 			</div>
 		</div>
 	</div>
-	<simple-modal
-		:title="modalTitle"
-		v-model:show="showAddDialog"
-		@closeModal="showAddDialog"
-	>
+	<simple-modal :title="modalTitle" v-model:show="showAddDialog" @closeModal="showAddDialog">
 		<template v-slot:body>
 			<shop-edit-form @send-form="sendShopEditForm" :shop="shop" />
 		</template>
@@ -45,17 +36,11 @@ export default {
 		...mapActions(['updateShop']),
 		openAddDialog() {
 			this.shop = {}
-			this.setModalTitle('Добавление нового сайта')
-			this.showAddDialog = true
-		},
-		async sendShopEditForm(shop) {
-			await this.updateShop(shop)
-			this.showAddDialog = false
+			this.$router.push(`/shop/null/edit`)
 		},
 		setUpdatedShop(shop) {
 			this.shop = shop
-			this.setModalTitle('Редактирование сайта')
-			this.showAddDialog = true
+			this.$router.push(`/shop/${shop._id}/edit`)
 		},
 		setModalTitle(text) {
 			this.modalTitle = text

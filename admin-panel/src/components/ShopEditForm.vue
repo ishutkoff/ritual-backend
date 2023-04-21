@@ -4,25 +4,26 @@
 		<input v-model="newShop.domain" type="text" placeholder="Домен" />
 		<input v-model="newShop.phone" type="text" placeholder="Номер телефона" />
 		<input v-model="newShop.email" type="text" placeholder="Email" />
-		<input
-			v-model="newShop.telegramApiKey"
-			type="text"
-			placeholder="Telegram Bot Api Key"
-		/>
-		<input
-			v-model="newShop.chatId"
-			type="text"
-			placeholder="Telegram chat id"
-		/>
+		<input v-model="newShop.telegramApiKey" type="text" placeholder="Telegram Bot Api Key" />
+		<input v-model="newShop.chatId" type="text" placeholder="Telegram chat id" />
+		<input v-model="newShop.mainColor" type="text" placeholder="Основной цвет" />
+	</div>
+	<div class="shop-edit-form__options">
+		<div class="shop-edit-form__select-widgets">
+			<div> <label><input v-model="newShop.useCalc" type='checkbox' /> Показывать калькулятор</label></div>
+			<div><label><input v-model="newShop.useVisual" type='checkbox' /> Показывать конструктор</label></div>
+			<div><label><input v-model="newShop.useDiscount" type='checkbox' /> Показывать выбор скидки</label></div>
+			<div><label><input v-model="newShop.useTeaser" type='checkbox' /> Использовать тизеры</label></div>
+		</div>
 	</div>
 	<div class="shop-edit-form__footer">
-		<simple-button :disabled="isEmpty" @click="sendEditForm()"
-			>Сохранить</simple-button
-		>
+		<simple-button :disabled="isEmpty" @click="sendEditForm()">Сохранить</simple-button>
 	</div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
 	props: {
 		shop: {
@@ -31,15 +32,24 @@ export default {
 	},
 	data() {
 		return {
-			newShop: {},
+			newShop: {
+				useCalc: true,
+				useVisual: true,
+				useDiscount: true,
+				useTeaser: true,
+			},
+			color: null
 		}
 	},
 	methods: {
-		sendEditForm() {
-			this.$emit('send-form', this.newShop)
+		...mapActions(['updateShop']),
+		async sendEditForm() {
+			await this.updateShop(this.newShop)
+			this.$router.push(`/`)
 		},
 	},
 	computed: {
+		...mapGetters(['getOneShop']),
 		isEmpty() {
 			return (
 				!this.newShop.name ||
@@ -50,17 +60,29 @@ export default {
 		},
 	},
 	mounted() {
-		this.newShop = Object.assign({}, this.shop)
+		if (this.$route.params.id !== 'null') {
+			this.newShop = Object.assign({}, this.getOneShop(this.$route.params.id))
+		}
+
 	},
 }
 </script>
 
 <style lang="scss" scoped>
 .shop-edit-form {
-	display: flex;
+	// display: flex;
 	flex-direction: column;
 	margin-top: 20px;
 	margin-bottom: 40px;
+	columns: 2;
+
+	&__options {
+		display: flex;
+	}
+
+	&__select-widgets {
+		margin-right: 20px;
+	}
 
 	input[type='text'],
 	input[type='number'] {
@@ -71,6 +93,7 @@ export default {
 		border-radius: 5px;
 		border: 1px solid;
 	}
+
 	select {
 		width: 100%;
 		height: 40px;
@@ -81,13 +104,16 @@ export default {
 
 	&__type {
 		margin-top: 20px;
+
 		label {
 			margin-right: 10px;
 		}
+
 		input[type='checkbox'] {
 			margin-right: 5x;
 		}
 	}
+
 	&__footer {
 		display: flex;
 		justify-content: flex-end;

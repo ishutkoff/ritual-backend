@@ -6,53 +6,52 @@
 		</div>
 		<div class="tabs-navigation">
 			<div class="tabs-navigation__left">
-				<router-link
-					:to="`/shop/${$route.params.id}/products`"
-					class="tabs-navigation__item"
-					:class="
-						$route.name === 'shop-products'
-							? 'tabs-navigation__item--selected'
-							: ''
-					"
-				>
+				<router-link :to="`/shop/${$route.params.id}/products`" class="tabs-navigation__item" :class="
+					$route.name === 'shop-products'
+						? 'tabs-navigation__item--selected'
+						: ''
+				">
 					Товары
 				</router-link>
-				<router-link
-					:to="`/shop/${$route.params.id}/services`"
-					class="tabs-navigation__item"
-					:class="
-						$route.name === 'shop-services'
-							? 'tabs-navigation__item--selected'
-							: ''
-					"
-				>
+				<router-link :to="`/shop/${$route.params.id}/services`" class="tabs-navigation__item" :class="
+					$route.name === 'shop-services'
+						? 'tabs-navigation__item--selected'
+						: ''
+				">
 					Услуги
 				</router-link>
-        <router-link
-            :to="`/shop/${$route.params.id}/visualizator`"
-            class="tabs-navigation__item"
-            :class="
-						$route.name === 'shop-visualizator'
-							? 'tabs-navigation__item--selected'
-							: ''
-					"
-        >
-          Визуализатор
-        </router-link>
+				<router-link :to="`/shop/${$route.params.id}/visualizator`" class="tabs-navigation__item" :class="
+					$route.name === 'shop-visualizator'
+						? 'tabs-navigation__item--selected'
+						: ''
+				">
+					Визуализатор
+				</router-link>
+				<router-link :to="`/shop/${$route.params.id}/discounts`" class="tabs-navigation__item" :class="
+					$route.name === 'shop-discounts'
+						? 'tabs-navigation__item--selected'
+						: ''
+				">
+					Скидки
+				</router-link>
 			</div>
 		</div>
 
 		<div v-if="$route.name === 'shop-products'" class="tabs-item">
-      <ProductList/>
+			<ProductList />
 		</div>
 
 		<div v-if="$route.name === 'shop-services'" class="tabs-item">
-       <ServicesList/>
+			<ServicesList />
 		</div>
 
-    <div v-if="$route.name === 'shop-visualizator'" class="tabs-item">
-      <Visualizator/>
-    </div>
+		<div v-if="$route.name === 'shop-visualizator'" class="tabs-item">
+			<Visualizator />
+		</div>
+
+		<div v-if="$route.name === 'shop-discounts'" class="tabs-item">
+			<DiscountList />
+		</div>
 	</div>
 </template>
 
@@ -67,12 +66,14 @@ import ProductList from "./ProductList.vue";
 import SimpleButton from "./UI/SimpleButton.vue";
 import Visualizator from "./Visualizator.vue";
 import ServicesList from "./ServicesList.vue";
+import DiscountList from './DiscountList.vue'
 export default {
 	components: {
-    ServicesList,
-    Visualizator,
-    SimpleButton,
-    ProductList,
+		ServicesList,
+		Visualizator,
+		SimpleButton,
+		ProductList,
+		DiscountList
 	},
 	data() {
 		return {
@@ -86,20 +87,20 @@ export default {
 		...mapGetters(['getOneShop', 'getShopServices', 'getShopProducts']),
 	},
 	methods: {
-		...mapMutations(['clearProductShopList', 'clearShopSketchList', 'setShopMonuments', 'clearShopMonumentList', 'clearServicesShopList', 'setShopProducts', 'setShopServices','setShopSketches']),
+		...mapMutations(['clearProductShopList', 'clearShopSketchList', 'setShopMonuments', 'clearShopMonumentList', 'clearServicesShopList', 'setShopProducts', 'setShopDiscounts', 'setShopServices', 'setShopSketches']),
 		...mapActions([
 			'fetchAllCategories',
 			'fetchAllSketchCategories',
-      'fetchShopById'
+			'fetchShopById'
 		]),
 		getCategories(forServices) {
 			return forServices
 				? this.$store.state.categories.categoriesList.filter(
-              category => category.forServices
-				  )
+					category => category.forServices
+				)
 				: this.$store.state.categories.categoriesList.filter(
-              category => !category.forServices
-				  )
+					category => !category.forServices
+				)
 		},
 		addNewService() {
 			this.service = {}
@@ -128,16 +129,17 @@ export default {
 		},
 	},
 	async mounted() {
-    this.shop = await this.fetchShopById(this.$route.params.id)
-    console.log(this.shop)
+		this.shop = await this.fetchShopById(this.$route.params.id)
+		console.log(this.shop)
 		this.clearProductShopList()
 		this.clearServicesShopList()
 		this.clearShopSketchList()
 		this.clearShopMonumentList()
-    this.setShopProducts(this.shop.products)
-    this.setShopServices(this.shop.services)
-    this.setShopSketches(this.shop.sketches)
-    this.setShopMonuments(this.shop.monuments)
+		this.setShopProducts(this.shop.products)
+		this.setShopDiscounts(this.shop.discounts)
+		this.setShopServices(this.shop.services)
+		this.setShopSketches(this.shop.sketches)
+		this.setShopMonuments(this.shop.monuments)
 		await this.fetchAllCategories(this.$route.params.id)
 		await this.fetchAllSketchCategories(this.$route.params.id)
 	},
@@ -149,6 +151,7 @@ export default {
 	&__title {
 		font-size: 30px;
 		margin-bottom: 40px;
+
 		p {
 			font-size: 18px;
 			margin-top: 10px;
@@ -186,6 +189,7 @@ export default {
 		display: flex;
 		flex-wrap: wrap;
 	}
+
 	&__buttons {
 		display: flex;
 		gap: 20px;
@@ -202,6 +206,7 @@ export default {
 				// margin-top: 40px;
 			}
 		}
+
 		&-wrapper {
 			display: flex;
 			flex-wrap: wrap;
@@ -230,19 +235,21 @@ export default {
 		cursor: pointer;
 		background-color: #1a1a1a;
 		border-radius: 10px 10px 0 0;
-    margin-right: 2px;
+		margin-right: 2px;
 		border-radius: 10px 10px 0 0;
 
 		&--selected {
 			background: #0e0e0e;
 		}
+
 		&:last-child {
-      margin: 0;
+			margin: 0;
 		}
 	}
 }
+
 .empty-list {
-  color: #7c7c7c;
-  font-size: 18px;
+	color: #7c7c7c;
+	font-size: 18px;
 }
 </style>

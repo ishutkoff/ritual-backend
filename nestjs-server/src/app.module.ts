@@ -5,6 +5,7 @@ import { ShopsModule } from './shops/shops.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ProductsModule } from './products/products.module';
+import { DiscountsModule } from './discounts/discounts.module';
 import { FilesModule } from './files/files.module';
 import { ServicesModule } from './services/services.module';
 import { CategoriesModule } from './categories/categories.module';
@@ -44,6 +45,7 @@ import { VisualizatorModule } from './visualizator/visualizator.module';
     }),
     ShopsModule,
     ProductsModule,
+    DiscountsModule,
     FilesModule,
     ServicesModule,
     CategoriesModule,

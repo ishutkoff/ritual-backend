@@ -4,6 +4,7 @@ import { Product } from './product.schema';
 import { Service } from './service.schema';
 import { VMonument } from './visualizator-monument.schema';
 import { VSketch } from './visualizator-sketch.schema';
+import { Discount } from './discounts.schema';
 
 export type ShopDocument = mongoose.HydratedDocument<Shop>;
 
@@ -27,8 +28,26 @@ export class Shop {
   @Prop()
   chatId: string;
 
+  @Prop()
+  mainColor: string;
+
+  @Prop({ default: false })
+  useCalc: boolean;
+
+  @Prop({ default: false })
+  useVisual: boolean;
+
+  @Prop({ default: false })
+  useDiscount: boolean;
+
+  @Prop({ default: false })
+  useTeaser: boolean;
+
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }] })
   products: Product[];
+
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Discount' }] })
+  discounts: Discount[];
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Service' }] })
   services: Service[];

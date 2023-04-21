@@ -20,6 +20,10 @@ export class SendDataController {
   async sendCalculator(@Body() dataObject: dataCalculatorObjectDto) {
     await this.sendDataService.sendCalculator(dataObject);
   }
+  @Post('/discount/')
+  async sendDiscount(@Body() dataObject: dataCalculatorObjectDto) {
+    await this.sendDataService.sendDiscount(dataObject);
+  }
   @Post('/constructor/')
   @UseInterceptors(
     FileInterceptor('document', {
